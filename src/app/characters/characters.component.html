@@ -1,0 +1,94 @@
+<div class="characters-page">
+  <div class="portal-effect"></div>
+  <div class="portal-background"></div>
+  
+  <!-- Sidebar component -->
+  <app-sidebar 
+    [isCollapsed]="isSidebarCollapsed" 
+    (toggleSidebar)="toggleSidebar()"
+    (applyFilters)="applyFilters($event)"
+    (resetFilters)="resetFilters()"
+  ></app-sidebar>
+  
+  <header class="header">
+    <div class="logo-container">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Rick_and_Morty.svg/1200px-Rick_and_Morty.svg.png" alt="Rick and Morty Logo" class="logo">
+    </div>
+    <div class="user-info">
+      <div class="welcome-message">
+        <h2>WELCOME TO DIMENSION C-137</h2>
+        <span class="username">{{ username }}</span>
+        <a *ngIf="isAdmin" [routerLink]="['/admin']" class="admin-link">Admin Panel</a>
+      </div>
+      <button (click)="logout()" class="logout-btn">
+        <span>EXIT PORTAL</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="container" [class.sidebar-open]="!isSidebarCollapsed">
+    <div class="header-controls">
+      <button class="toggle-filters-btn" (click)="toggleSidebar()">
+        <span class="filter-icon"></span>
+        <span>{{ isSidebarCollapsed ? 'Show Filters' : 'Hide Filters' }}</span>
+      </button>
+      <h1>Rick and Morty Characters</h1>
+    </div>
+    
+    <div *ngIf="activeFilters" class="active-filters-banner">
+      <span>Showing filtered results</span>
+      <button (click)="resetFilters()" class="reset-filters-btn">Clear All Filters</button>
+    </div>
+    
+    <div *ngIf="loading" class="loading">
+      <div class="portal-spinner"></div>
+      <span>Opening interdimensional portal...</span>
+    </div>
+    
+    <div *ngIf="error" class="error">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="!loading && !error" class="characters-grid">
+      <div *ngFor="let character of filteredCharacters" class="character-card" [routerLink]="['/character', character.id]">
+        <div class="character-image">
+          <img [src]="character.image" [alt]="character.name">
+          <span [class]="getStatusClass(character.status)" class="status-badge">{{ character.status }}</span>
+        </div>
+        <div class="character-info">
+          <h3>{{ character.name }}</h3>
+          <div class="info-row">
+            <span class="label">Species:</span>
+            <span>{{ character.species }}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Location:</span>
+            <span>{{ character.location.name }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div *ngIf="!loading && !error && filteredCharacters.length === 0" class="no-results">
+      <div class="portal-icon"></div>
+      <p>No characters found in this dimension!</p>
+      <button (click)="resetFilters()" class="reset-filters-btn">Reset Filters</button>
+    </div>
+    
+    <div *ngIf="!loading && !error && filteredCharacters.length > 0" class="pagination">
+      <button 
+        [disabled]="currentPage === 1" 
+        (click)="previousPage()" 
+        class="pagination-btn prev-btn">
+        Previous
+      </button>
+      <span class="page-info">Page {{ currentPage }} of {{ totalPages }}</span>
+      <button 
+        [disabled]="currentPage === totalPages" 
+        (click)="nextPage()" 
+        class="pagination-btn next-btn">
+        Next
+      </button>
+    </div>
+  </div>
+</div>

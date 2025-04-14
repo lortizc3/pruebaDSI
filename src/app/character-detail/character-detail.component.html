@@ -1,0 +1,108 @@
+<div class="character-detail-page">
+  <div class="portal-effect"></div>
+  <div class="portal-background"></div>
+
+  <div class="container">
+    <div class="back-btn" (click)="goBack()">
+      <div class="portal-btn">
+        <div class="portal-inner"></div>
+      </div>
+      <span>Go Back</span>
+    </div>
+    
+    <div *ngIf="loading" class="loading">
+      <div class="portal-spinner"></div>
+      <span>Opening interdimensional portal...</span>
+    </div>
+    
+    <div *ngIf="error" class="error">
+      {{ error }}
+    </div>
+    
+    <div *ngIf="!loading && !error && character" class="character-profile">
+      <div class="profile-header">
+        <div class="character-avatar">
+          <img [src]="character.image" [alt]="character.name">
+          <div [class]="getStatusClass(character.status)" class="status-badge">
+            {{ character.status }}
+          </div>
+        </div>
+        <div class="character-info">
+          <h1>{{ character.name }}</h1>
+          <div class="info-tag species">
+            <span class="label">Species:</span>
+            <span class="value">{{ character.species }}</span>
+          </div>
+          <div class="info-tag gender">
+            <span class="label">Gender:</span>
+            <span class="value">{{ character.gender }}</span>
+          </div>
+          <div *ngIf="character.type" class="info-tag type">
+            <span class="label">Type:</span>
+            <span class="value">{{ character.type }}</span>
+          </div>
+        </div>
+      </div>
+      
+      <div class="details-grid">
+        <div class="detail-section">
+          <h2>Origin</h2>
+          <div class="detail-content">
+            <div class="detail-item">
+              <span class="label">Name:</span>
+              <span class="value">{{ character.origin.name }}</span>
+            </div>
+            <div *ngIf="character.origin.url" class="location-icon">
+              <div class="planet-icon"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detail-section">
+          <h2>Current Location</h2>
+          <div class="detail-content">
+            <div class="detail-item">
+              <span class="label">Name:</span>
+              <span class="value">{{ character.location.name }}</span>
+            </div>
+            <div *ngIf="character.location.url" class="location-icon">
+              <div class="planet-icon"></div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detail-section wide">
+          <h2>Episodes</h2>
+          <div class="episodes-list">
+            <div class="episode-count">
+              <span class="count">{{ character.episode.length }}</span>
+              <span class="label">Episodes</span>
+            </div>
+            <div class="episode-grid">
+              <div *ngFor="let ep of character.episode.slice(0, 6)" class="episode-item">
+                <div class="ep-thumbnail">{{ ep.slice(ep.lastIndexOf('/') + 1) }}</div>
+              </div>
+              <div *ngIf="character.episode.length > 6" class="more-episodes">
+                +{{ character.episode.length - 6 }} more
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="detail-section wide">
+          <h2>Additional Information</h2>
+          <div class="detail-content">
+            <div class="detail-item">
+              <span class="label">Created:</span>
+              <span class="value">{{ character.created | date }}</span>
+            </div>
+            <div class="detail-item">
+              <span class="label">URL:</span>
+              <span class="value">{{ character.url }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

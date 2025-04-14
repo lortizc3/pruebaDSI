@@ -1,0 +1,91 @@
+<div class="sidebar" [class.collapsed]="isCollapsed">
+  <div class="portal-background"></div>
+  
+  <div class="toggle-button" (click)="toggle()">
+    <div class="portal-icon" [class.collapsed]="isCollapsed">
+      <div class="portal-inner"></div>
+    </div>
+  </div>
+  
+  <div class="sidebar-content">
+    <div class="sidebar-header">
+      <h2>Interdimensional Filters</h2>
+    </div>
+    
+    <div class="filter-section">
+      <h3>Species Filter</h3>
+      <div class="filter-options">
+        <div class="filter-option">
+          <input type="checkbox" id="human" name="species" 
+                 [(ngModel)]="selectedSpecies['human']">
+          <label for="human">Human</label>
+        </div>
+        <div class="filter-option">
+          <input type="checkbox" id="alien" name="species" 
+                 [(ngModel)]="selectedSpecies['alien']">
+          <label for="alien">Alien</label>
+        </div>
+        <div class="filter-option">
+          <input type="checkbox" id="robot" name="species" 
+                 [(ngModel)]="selectedSpecies['robot']">
+          <label for="robot">Robot</label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="filter-section">
+      <h3>Dimension Selector</h3>
+      <select class="dimension-select" [(ngModel)]="filterModel.dimension">
+        <option value="">All Dimensions</option>
+        <option value="C-137">Dimension C-137</option>
+        <option value="Cronenberg">Cronenberg World</option>
+        <option value="Evil">Evil Morty's Reality</option>
+        <option value="Citadel">The Citadel</option>
+      </select>
+    </div>
+    
+    <div class="filter-section">
+      <h3>Morty-o-Meter: {{ getRicknessLabel() }}</h3>
+      <div class="morty-meter">
+        <input type="range" min="1" max="10" 
+               [(ngModel)]="filterModel.ricknessLevel" 
+               class="slider" id="morty-scale">
+        <div class="meter-labels">
+          <span>Morty</span>
+          <span>Rick</span>
+        </div>
+      </div>
+    </div>
+    
+    <div class="filter-section">
+      <h3>Status</h3>
+      <div class="status-filters">
+        <div class="status-option">
+          <input type="radio" id="alive" name="status" value="alive"
+                 [(ngModel)]="filterModel.status">
+          <label for="alive" class="status-alive">Alive</label>
+        </div>
+        <div class="status-option">
+          <input type="radio" id="dead" name="status" value="dead"
+                 [(ngModel)]="filterModel.status">
+          <label for="dead" class="status-dead">Dead</label>
+        </div>
+        <div class="status-option">
+          <input type="radio" id="unknown" name="status" value="unknown"
+                 [(ngModel)]="filterModel.status">
+          <label for="unknown" class="status-unknown">Unknown</label>
+        </div>
+        <div class="status-option">
+          <input type="radio" id="all" name="status" value=""
+                 [(ngModel)]="filterModel.status">
+          <label for="all">All Statuses</label>
+        </div>
+      </div>
+    </div>
+    
+    <div class="action-buttons">
+      <button class="apply-filter" (click)="onApplyFilters()">Apply Filters</button>
+      <button class="reset-filter" (click)="onResetFilters()">Reset</button>
+    </div>
+  </div>
+</div>

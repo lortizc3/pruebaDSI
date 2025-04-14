@@ -1,0 +1,49 @@
+<div class="login-container">
+  <div class="portal-effect"></div>
+  <div class="login-card">
+    <div class="login-header">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Rick_and_Morty.svg/1200px-Rick_and_Morty.svg.png" alt="Rick and Morty Logo" class="logo">
+      <h2>DIMENSION C-137</h2>
+    </div>
+    
+    <form (ngSubmit)="onSubmit()" class="login-form">
+      <div class="form-group">
+        <label for="username">USERNAME</label>
+        <div class="input-wrapper">
+          <input 
+            type="text" 
+            id="username" 
+            name="username"
+            [(ngModel)]="username" 
+            placeholder="Enter your username" 
+            required>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">PASSWORD</label>
+        <div class="input-wrapper">
+          <input 
+            type="password" 
+            id="password" 
+            name="password"
+            [(ngModel)]="password" 
+            placeholder="Enter your password" 
+            required>
+        </div>
+      </div>
+      
+      <div *ngIf="error" class="error-message">
+        {{ error }}
+      </div>
+      
+      <button type="submit" [disabled]="loading" class="login-button">
+        {{ loading ? 'LOADING...' : 'ENTER PORTAL' }}
+      </button>
+      
+      <div class="hint">
+        <small>Hint: Use admin/admin123 or user/user123</small>
+      </div>
+    </form>
+  </div>
+</div>

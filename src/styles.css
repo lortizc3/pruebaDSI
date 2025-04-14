@@ -1,0 +1,68 @@
+/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
+@import "primeng/resources/themes/lara-dark-teal/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: "Poppins", "Roboto", "Helvetica Neue", sans-serif;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #f8f9fa;
+  color: #2c3e50;
+  --primary-color: #97ce4c;
+  --secondary-color: #3498db;
+  --accent-color: #9ef01a;
+  --dark-color: #2c3e50;
+  --light-color: #f8f9fa;
+  --error-color: #e74c3c;
+}
+
+input, button {
+  font-family: "Poppins", sans-serif;
+}
+
+:root {
+  --rm-teal: #00b0c8;
+  --rm-green: #39ff14;
+  --rm-dark: #2c3e50;
+  --error-color: #e74c3c;
+}
+
+/* Global responsive styles */
+@media (max-width: 576px) {
+  :root {
+    font-size: 14px;
+  }
+  body {
+    overflow-x: hidden;
+    width: 100%;
+  }
+}
+/* Add a smooth scrolling behavior for better mobile experience */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Better button interactions on touch devices */
+@media (hover: none) {
+  button, a {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}/*# sourceMappingURL=styles.css.map */
