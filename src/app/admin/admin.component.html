@@ -2,12 +2,6 @@
   <div class="portal-effect"></div>
   <div class="portal-background"></div>
   
-  <!-- Toast para mensajes -->
-  <p-toast position="top-right" styleClass="rick-morty-toast"></p-toast>
-  
-  <!-- Diálogo de confirmación -->
-  <p-confirmDialog [style]="{width: '450px'}" styleClass="rick-morty-dialog"></p-confirmDialog>
-  
   <header class="admin-header">
     <div class="logo">
       <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Rick_and_Morty.svg/1200px-Rick_and_Morty.svg.png" alt="Rick and Morty Logo">
@@ -41,130 +35,67 @@
       <div class="card">
         <div class="card-header">
           <h2>Registered Users</h2>
-          <p-button 
-            label="{{ showAddForm ? 'Cancel' : 'Add User' }}" 
-            styleClass="p-button-outlined p-button-success rick-morty-btn"
-            (onClick)="toggleAddForm()"
-            [icon]="showAddForm ? 'pi pi-times' : 'pi pi-plus'"
-            iconPos="left">
-          </p-button>
+          <button class="add-user-btn" (click)="toggleAddForm()">
+            {{ showAddForm ? 'Cancel' : 'Add User' }}
+          </button>
         </div>
 
         <div class="add-user-form" *ngIf="showAddForm">
           <h3>Add New User</h3>
           <div class="form-group">
             <label for="newUsername">Username:</label>
-            <input pInputText id="newUsername" [(ngModel)]="newUser.username" class="p-inputtext-sm" />
+            <input type="text" id="newUsername" [(ngModel)]="newUser.username">
           </div>
           <div class="form-group">
             <label for="newRole">Role:</label>
-            <p-dropdown 
-              [options]="roleOptions" 
-              [(ngModel)]="newUser.role" 
-              optionLabel="label" 
-              optionValue="value"
-              styleClass="rick-morty-dropdown">
-            </p-dropdown>
+            <select id="newRole" [(ngModel)]="newUser.role">
+              <option value="user">User</option>
+              <option value="admin">Administrator</option>
+            </select>
           </div>
           <div class="form-actions">
-            <p-button label="Add User" icon="pi pi-user-plus" styleClass="p-button-success rick-morty-btn" (onClick)="addUser()"></p-button>
-            <p-button label="Cancel" icon="pi pi-times" styleClass="p-button-danger rick-morty-btn" (onClick)="toggleAddForm()"></p-button>
+            <button (click)="addUser()">Add User</button>
+            <button (click)="toggleAddForm()">Cancel</button>
           </div>
         </div>
 
-        <!-- Tabla PrimeNG con estilo personalizado -->
-        <p-table 
-          [value]="users" 
-          [tableStyle]="{'min-width': '50rem'}"
-          styleClass="rick-morty-table"
-          [paginator]="users.length > 5" 
-          [rows]="5"
-          [rowHover]="true">
-          
-          <ng-template pTemplate="header">
+        <table class="users-table">
+          <thead>
             <tr>
               <th>Username</th>
               <th>Role</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
-          </ng-template>
-          
-          <ng-template pTemplate="body" let-user>
-            <tr>
-              <td>{{ user.username }}</td>
-              <td>
-                <span [class]="user.role === 'admin' ? 'role-badge role-admin' : 'role-badge'">
-                  {{ user.role === 'admin' ? 'Administrator' : 'User' }}
-                </span>
-              </td>
-              <td><span class="status-active">Active</span></td>
-              <td class="actions">
-                <p-button 
-                  icon="pi pi-pencil" 
-                  styleClass="p-button-rounded p-button-text p-button-success mr-2"
-                  (onClick)="startEdit(user)"
-                  pTooltip="Edit User">
-                </p-button>
-                <p-button 
-                  icon="pi pi-trash" 
-                  styleClass="p-button-rounded p-button-text p-button-danger ml-2"
-                  (onClick)="deleteUser(user)"
-                  pTooltip="Delete User">
-                </p-button>
-              </td>
-            </tr>
-          </ng-template>
-          
-          <ng-template pTemplate="emptymessage">
-            <tr>
-              <td colspan="4" class="text-center">No users found</td>
-            </tr>
-          </ng-template>
-        </p-table>
-
-        <!-- Dialog para editar usuario -->
-        <p-dialog 
-          header="Edit User" 
-          [visible]="!!editingUser" 
-          (visibleChange)="!$event && cancelEdit()"
-          [modal]="true" 
-          [style]="{width: '450px'}"
-          [draggable]="false" 
-          [resizable]="false"
-          styleClass="rick-morty-dialog">
-          
-          <div class="form-group" *ngIf="editingUser">
-            <label>Username:</label>
-            <input pInputText class="p-inputtext-sm w-full" [(ngModel)]="editForm.username" disabled />
-          </div>
-          
-          <div class="form-group mt-4" *ngIf="editingUser">
-            <label>Role:</label>
-            <p-dropdown 
-              [options]="roleOptions" 
-              [(ngModel)]="editForm.role" 
-              optionLabel="label" 
-              optionValue="value"
-              styleClass="w-full rick-morty-dropdown">
-            </p-dropdown>
-          </div>
-          
-          <ng-template pTemplate="footer">
-            <p-button 
-              icon="pi pi-check" 
-              label="Save" 
-              styleClass="p-button-success rick-morty-btn"
-              (onClick)="saveEdit()">
-            </p-button>
-            <p-button 
-              icon="pi pi-times" 
-              label="Cancel" 
-              styleClass="p-button-danger rick-morty-btn"
-              (onClick)="cancelEdit()">
-            </p-button>
-          </ng-template>
-        </p-dialog>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let user of users">
+              <tr *ngIf="editingUser && editingUser.username === user.username">
+                <td>{{ user.username }}</td>
+                <td>
+                  <select [(ngModel)]="editForm.role">
+                    <option value="user">User</option>
+                    <option value="admin">Administrator</option>
+                  </select>
+                </td>
+                <td>Active</td>
+                <td class="actions">
+                  <button class="save-btn" (click)="saveEdit()">Save</button>
+                  <button class="cancel-btn" (click)="cancelEdit()">Cancel</button>
+                </td>
+              </tr>
+              <tr *ngIf="!editingUser || editingUser.username !== user.username">
+                <td>{{ user.username }}</td>
+                <td>{{ user.role === 'admin' ? 'Administrator' : 'User' }}</td>
+                <td>Active</td>
+                <td class="actions">
+                  <button class="edit-btn" (click)="startEdit(user)">Edit</button>
+                  <button class="delete-btn" (click)="deleteUser(user)">Delete</button>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
       </div>
       
       <div class="stats-container">

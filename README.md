@@ -30,11 +30,6 @@ git clone https://github.com/lortizc3/prueba-DSI.git
 
 ### Paso 2: Entrar al directorio del proyecto
 
-```bash
-cd prueba-DSI/rick-and-morty-simple
-```
-
-### Paso 3: Instalar dependencias
 
 ```bash
 npm install

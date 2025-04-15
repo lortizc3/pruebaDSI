@@ -1,8 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
-@import "primeng/resources/themes/lara-dark-teal/theme.css";
-@import "primeng/resources/primeng.css";
-@import "primeicons/primeicons.css";
 html, body {
   margin: 0;
   padding: 0;
@@ -57,12 +54,4 @@ html {
   button, a {
     -webkit-tap-highlight-color: transparent;
   }
-}
-html, body {
-  height: 100%;
-}
-
-body {
-  margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }/*# sourceMappingURL=styles.css.map */

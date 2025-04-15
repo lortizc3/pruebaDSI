@@ -1,5 +1,7 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { Observable, of, throwError } from 'rxjs';
+import { PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 
 export interface User {
   username: string;
@@ -16,12 +18,15 @@ export class AuthService {
   ];
 
   private currentUser: User | null = null;
+  private platformId = inject(PLATFORM_ID);
 
   constructor() {
-    // Check if user is stored in localStorage
-    const storedUser = localStorage.getItem('currentUser');
-    if (storedUser) {
-      this.currentUser = JSON.parse(storedUser);
+    if (isPlatformBrowser(this.platformId)) {
+      // Only access localStorage in browser environment
+      const storedUser = localStorage.getItem('currentUser');
+      if (storedUser) {
+        this.currentUser = JSON.parse(storedUser);
+      }
     }
   }
 
@@ -31,7 +36,11 @@ export class AuthService {
     if (user) {
       const { password, ...userWithoutPassword } = user;
       this.currentUser = userWithoutPassword as User;
-      localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+      
+      if (isPlatformBrowser(this.platformId)) {
+        localStorage.setItem('currentUser', JSON.stringify(this.currentUser));
+      }
+      
       return of(this.currentUser);
     }
     
@@ -40,7 +49,10 @@ export class AuthService {
 
   logout(): void {
     this.currentUser = null;
-    localStorage.removeItem('currentUser');
+    
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem('currentUser');
+    }
   }
 
   get isLoggedIn(): boolean {

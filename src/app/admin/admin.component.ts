@@ -5,31 +5,10 @@ import { Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 import { User } from '../services/auth.service';
 
-// PrimeNG imports
-import { TableModule } from 'primeng/table';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { DialogModule } from 'primeng/dialog';
-import { InputTextModule } from 'primeng/inputtext';
-import { DropdownModule } from 'primeng/dropdown';
-import { MessageService, ConfirmationService } from 'primeng/api';
-
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [
-    CommonModule, 
-    FormsModule,
-    TableModule,
-    ButtonModule,
-    ToastModule,
-    ConfirmDialogModule,
-    DialogModule,
-    InputTextModule,
-    DropdownModule
-  ],
-  providers: [MessageService, ConfirmationService],
+  imports: [CommonModule, FormsModule],
   templateUrl: './admin.component.html',
   styleUrl: './admin.component.scss'
 })
@@ -42,18 +21,10 @@ export class AdminComponent implements OnInit {
   editForm: { username: string, role: 'admin' | 'user' } = { username: '', role: 'user' };
   showAddForm: boolean = false;
   newUser: User = { username: '', role: 'user' };
-  
-  // Opciones para el dropdown de roles
-  roleOptions = [
-    { label: 'User', value: 'user' },
-    { label: 'Administrator', value: 'admin' }
-  ];
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -92,11 +63,6 @@ export class AdminComponent implements OnInit {
     if (index !== -1) {
       this.users[index] = { ...this.editForm } as User;
       // In a real app, we would call a service to update the user
-      this.messageService.add({
-        severity: 'success',
-        summary: 'Success',
-        detail: `User ${this.editForm.username} was updated successfully`
-      });
     }
     this.editingUser = null;
   }
@@ -104,29 +70,14 @@ export class AdminComponent implements OnInit {
   deleteUser(user: User): void {
     if (user.username === this.username) {
       this.error = "You cannot delete your own account!";
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: "You cannot delete your own account!"
-      });
       setTimeout(() => this.error = '', 3000);
       return;
     }
     
-    this.confirmationService.confirm({
-      message: `Are you sure you want to delete ${user.username}?`,
-      header: 'Confirm Delete',
-      icon: 'pi pi-exclamation-triangle',
-      accept: () => {
-        this.users = this.users.filter(u => u.username !== user.username);
-        // In a real app, we would call a service to delete the user
-        this.messageService.add({
-          severity: 'success',
-          summary: 'Success',
-          detail: `User ${user.username} was deleted successfully`
-        });
-      }
-    });
+    if (confirm(`Are you sure you want to delete ${user.username}?`)) {
+      this.users = this.users.filter(u => u.username !== user.username);
+      // In a real app, we would call a service to delete the user
+    }
   }
 
   toggleAddForm(): void {
@@ -139,11 +90,6 @@ export class AdminComponent implements OnInit {
   addUser(): void {
     if (!this.newUser.username.trim()) {
       this.error = "Username cannot be empty";
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: "Username cannot be empty"
-      });
       setTimeout(() => this.error = '', 3000);
       return;
     }
@@ -151,11 +97,6 @@ export class AdminComponent implements OnInit {
     // Check if username already exists
     if (this.users.some(u => u.username === this.newUser.username)) {
       this.error = "Username already exists";
-      this.messageService.add({
-        severity: 'error',
-        summary: 'Error',
-        detail: "Username already exists"
-      });
       setTimeout(() => this.error = '', 3000);
       return;
     }
@@ -163,11 +104,6 @@ export class AdminComponent implements OnInit {
     this.users.push({ ...this.newUser });
     this.showAddForm = false;
     // In a real app, we would call a service to add the user
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Success',
-      detail: `User ${this.newUser.username} was added successfully`
-    });
   }
 
   logout(): void {
