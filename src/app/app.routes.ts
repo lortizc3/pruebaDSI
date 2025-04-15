@@ -23,6 +23,6 @@ export const routes: Routes = [
     component: AdminComponent,
     canActivate: [authGuard, adminGuard]
   },
-  { path: '', redirectTo: '/characters', pathMatch: 'full' },
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: '**', redirectTo: '/login' }
 ];
