@@ -1,6 +1,6 @@
 # Rick and Morty Explorer 🧪👽
 
-Una aplicación Angular 17 que consume la [API de Rick and Morty](https://rickandmortyapi.com/) e implementa un sistema de autenticación básico con control de acceso basado en roles. ¡Explora el multiverso con estilo!
+Una aplicación Angular 17.3.12 que consume la [API de Rick and Morty](https://rickandmortyapi.com/) e implementa un sistema de autenticación básico con control de acceso basado en roles. ¡Explora el multiverso con estilo!
 
 ![Rick and Morty Logo](https://upload.wikimedia.org/wikipedia/commons/thumb/b/b1/Rick_and_Morty.svg/1200px-Rick_and_Morty.svg.png)
 
@@ -12,6 +12,7 @@ Una aplicación Angular 17 que consume la [API de Rick and Morty](https://rickan
 - 👑 Panel de administración para gestión de usuarios (solo rol admin)
 - 📱 Diseño responsivo utilizando componentes de PrimeNG
 - 🌀 Efectos de portal y estética de Rick and Morty en toda la aplicación
+- 🚀 Server-Side Rendering (SSR) con Angular Universal
 
 ## 🛠️ Requisitos previos
 
@@ -38,17 +39,33 @@ Este paso puede tomar unos minutos. ¡No te preocupes! Es normal que aparezcan a
 
 ## 🎮 Ejecutando la aplicación
 
-### Paso 1: Iniciar el servidor de desarrollo
+### Modo de desarrollo (cliente)
 
 ```bash
-ng serve
+npm start
 ```
-
-### Paso 2: Abrir la aplicación en el navegador
+o
+```bash
+ng serve --port 4201
+```
 
 Una vez que termine de compilar, abre tu navegador favorito y navega a:
 ```
-http://localhost:4200
+http://localhost:4201
+```
+
+### Modo SSR (Server-Side Rendering)
+
+Para construir la aplicación con SSR:
+
+```bash
+ng build && ng run rick-and-morty-simple:server
+```
+
+Para ejecutar la versión SSR:
+
+```bash
+node dist/rick-and-morty-simple/server/server.mjs
 ```
 
 ## 🔑 Credenciales de acceso
@@ -104,17 +121,22 @@ rick-and-morty-simple/
 │   │   ├── guards/           # Guards de autenticación y administración
 │   │   ├── login/            # Componente de inicio de sesión
 │   │   ├── services/         # Servicios (auth, rick-and-morty)
-│   │   └── shared/           # Componentes compartidos (sidebar)
+│   │   ├── shared/           # Componentes compartidos (sidebar)
+│   │   └── app.server.module.ts # Módulo para SSR
 │   ├── assets/               # Recursos estáticos
-│   ├── styles.scss           # Estilos globales
-│   └── main.ts               # Punto de entrada de la aplicación
-└── angular.json              # Configuración de Angular
+│   ├── styles.scss           # Estilos globales y PrimeNG
+│   ├── main.ts               # Punto de entrada de la aplicación
+│   ├── main.server.ts        # Punto de entrada para SSR
+│   └── server.ts             # Configuración del servidor Express
+├── angular.json              # Configuración de Angular
+└── tsconfig.server.json      # Configuración TypeScript para SSR
 ```
 
 ## 🛠️ Tecnologías utilizadas
 
-- ⚡ Angular 17 (Standalone Components)
-- 🎨 PrimeNG Components
+- ⚡ Angular 17.3.12 (Standalone Components)
+- 🎨 PrimeNG 17.18.15
+- 🖥️ Angular Universal para SSR
 - 🔄 RxJS
 - 🌐 Rick and Morty API
 - 🖌️ SCSS para estilos personalizados
@@ -135,12 +157,25 @@ rick-and-morty-simple/
 ### Problemas con localStorage
 - Si ves errores relacionados con localStorage, es posible que estés navegando en modo incógnito
 - Algunos navegadores bloquean localStorage en modo incógnito
+- Al utilizar SSR, recuerda que localStorage solo está disponible en el navegador, no en el servidor
+
+### Problemas con SSR
+- Verifica que el directorio de salida (`dist/rick-and-morty-simple`) esté correcto
+- Asegúrate de que `AppServerModule` está importado correctamente
+- Comprueba que las dependencias de Angular Universal estén instaladas
 
 ## 💡 Consejos para desarrolladores
 
 - Explora el código fuente para entender la estructura y patrones utilizados
-- Los componentes de PrimeNG se han personalizado para mantener la estética de Rick and Morty
+- Los estilos de PrimeNG se importan desde `styles.scss` usando la notación de tilde (~):
+  ```scss
+  @import "~primeng/resources/themes/lara-light-blue/theme.css";
+  @import "~primeng/resources/primeng.min.css";
+  @import "~primeicons/primeicons.css";
+  ```
+- El SSR está implementado usando la configuración estándar de Angular Universal en Angular 17
 - Los guards protegen rutas según el rol del usuario (authGuard y adminGuard)
 - La aplicación usa un enfoque modular con componentes independientes
 
 ---
+
